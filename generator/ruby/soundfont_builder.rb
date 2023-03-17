@@ -29,7 +29,7 @@ require 'zlib'
 include FileUtils
 
 BUILD_DIR = "./soundfont" # Output path
-SOUNDFONT = "../sf2/redco/TR-808-Drums.SF2" # Soundfont file path
+SOUNDFONT = "../sf2/drums.sf2" # Soundfont file path
 
 # This script will generate MIDI.js-compatible instrument JS files for
 # all instruments in the below array. Add or remove as necessary.
@@ -56,9 +56,12 @@ INSTRUMENTS = [
 
 # The encoders and tools are expected in your PATH. You can supply alternate
 # paths by changing the constants below.
-OGGENC = `which oggenc`.chomp
-LAME = `which lame`.chomp
-FLUIDSYNTH = `which fluidsynth`.chomp
+# OGGENC = `which oggenc2`.chomp
+# LAME = `which lame`.chomp
+# FLUIDSYNTH = `which fluidsynth`.chomp
+OGGENC = "oggenc2"
+LAME = "lame"
+FLUIDSYNTH = "fluidsynth"
 
 puts "Building the following instruments using font: " + SOUNDFONT
 
@@ -76,7 +79,7 @@ puts "Sending output to: " + BUILD_DIR
 puts
 
 raise "Can't find soundfont: #{SOUNDFONT}" unless File.exists? SOUNDFONT
-raise "Can't find 'oggenc' command" if OGGENC.empty?
+raise "Can't find 'oggenc2' command" if OGGENC.empty?
 raise "Can't find 'lame' command" if LAME.empty?
 raise "Can't find 'fluidsynth' command" if FLUIDSYNTH.empty?
 raise "Output directory does not exist: #{BUILD_DIR}" unless File.exists?(BUILD_DIR)

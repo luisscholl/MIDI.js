@@ -53,14 +53,16 @@ walker.on("end", function () {
 --------------------------------------------------- */
 var encoder = {
 	"mp3": "lame -v -b 8 -B 64",
-	"ogg": "oggenc -m 32 -M 128"
+	"ogg": "oggenc2 -m 32 -M 128"
 };
 
 var convertPackage = function (stat, type, callback) {
 	var src = "./source/" + stat.name;
-	exec(encoder[type] + " '" + src + "'", function (err) { // run encoder
+	exec(encoder[type] + " \"" + src + "\"", function (err) { // run encoder
+		if (err) console.error(err);
 		var format = src.replace(".wav", "." + type);
 		fs.readFile(format, function (err, buffer) { // read encoded file
+			if (err) console.error(err);
 			var key = noteToKey[index];
 			if (type === "mp3") {
 				var from = format;
@@ -99,7 +101,8 @@ MIDI.Soundfont["' + instrumentName + '"] = ';
 	var path = "./build/" + instrumentName + "." + type + ".js";
 	fs.writeFileSync(path, js);
 	///
-	var buf = new Buffer(js, "utf-8"); // Choose encoding for the string.
+	//var buf = new Buffer(js, "utf-8"); // Choose encoding for the string.
+	var buf = Buffer.from(js);
 	zlib.gzip(buf, function (self, result) { // The callback will give you the 
 		fs.writeFileSync(path + ".gz", result);
 	});
